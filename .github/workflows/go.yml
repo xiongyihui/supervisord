@@ -38,8 +38,14 @@ jobs:
       run: |
         go generate
         go build -tags release -a -ldflags "-linkmode external -extldflags -static" -o supervisord
-        ls
-        file supervisord || echo 'check output'
+        file supervisord && supervisord -h
+        mv supervisord supervisord-${{ matrix.target }}
+
+    - name: Uplaod
+      uses: actions/upload-artifact@master
+      with:
+        name: supervisord binary (${{ matrix.target }})
+        path: supervisord-${{ matrix.target }}
 
     - name: Test
       run: echo 'bypass test' || go test -v ./...
