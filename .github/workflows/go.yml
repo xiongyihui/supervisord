@@ -36,6 +36,7 @@ jobs:
 
     - name: Build
       run: |
+        go generate
         go build -tags release -a -ldflags "-linkmode external -extldflags -static" -o supervisord
         ls
         file supervisord || echo 'check output'
